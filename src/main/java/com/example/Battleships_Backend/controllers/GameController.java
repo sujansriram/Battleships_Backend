@@ -54,11 +54,11 @@ public class GameController {
 
     }
 
-    @PatchMapping(value = "/{id}")
-    public ResponseEntity<Reply> handleTurn(@PathVariable("id") Long id, @RequestBody Cell cell){
-        Reply reply = gameService.handleTurn(cell);
-        return new ResponseEntity<>(reply, HttpStatus.OK);
-    }
+//    @PatchMapping(value = "/{id}")
+//    public ResponseEntity<Reply> handleTurn(@PathVariable("id") Long id, @RequestBody Cell cell){
+//        Reply reply = gameService.handleTurn(cell);
+//        return new ResponseEntity<>(reply, HttpStatus.OK);
+//    }
 
     @PutMapping
     public ResponseEntity<Game> resetGame(){
