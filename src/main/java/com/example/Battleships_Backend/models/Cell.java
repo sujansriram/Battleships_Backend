@@ -1,12 +1,32 @@
 package com.example.Battleships_Backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
+@Entity(name = "cells")
 public class Cell {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "x_coordinate")
     private int xCoordinate;
+
+    @Column(name = "y_coordinate")
     private int yCoordinate;
+
+    @Column(name = "has_been_hit")
     private boolean hasBeenHit;
+
+    @ManyToOne
+    @JoinColumn( name = "ship_id")
+    @JsonIgnoreProperties({"cells"})
     private Ship ship;
+
+    @ManyToOne
+    @JoinColumn( name = "grid_id")
+    @JsonIgnoreProperties({"cells"})
     private Grid grid;
 
 

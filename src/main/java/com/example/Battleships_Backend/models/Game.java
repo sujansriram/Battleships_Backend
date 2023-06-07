@@ -1,14 +1,27 @@
 package com.example.Battleships_Backend.models;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+@Entity(name = "games")
 public class Game {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "is_started")
     private boolean isStarted;
+
+    @Column(name = "is_finished")
     private boolean isFinished;
+
+    @Column(name = "player_one_turn")
     private boolean playerOneTurn;
+
+    @OneToMany(mappedBy = "grid")
+    @JsonIgnoreProperties({"games"})
     private ArrayList<Grid> grids;
 
     public Game(Grid gridPlayerOne, Grid gridPlayerTwo){

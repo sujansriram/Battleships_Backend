@@ -1,13 +1,29 @@
 package com.example.Battleships_Backend.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 
+@Entity(name = "ships")
 public class Ship {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private int size;
+
+    @Column( name = "has_sunk")
     private boolean hasSunk;
+
+    @OneToMany(mappedBy = "ship")
+    @JsonIgnoreProperties({"ships"})
     private ArrayList<Cell> cells;
 
 
