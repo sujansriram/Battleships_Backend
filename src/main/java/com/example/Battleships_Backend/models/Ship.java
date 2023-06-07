@@ -11,6 +11,7 @@ public class Ship {
     private ArrayList<Cell> cells;
 
 
+//    Constructor
     public Ship(String name, int size){
         this.name = name;
         this.size = size;

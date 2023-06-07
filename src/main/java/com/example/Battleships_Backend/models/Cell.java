@@ -9,6 +9,8 @@ public class Cell {
     private Ship ship;
     private Grid grid;
 
+
+//    Constructor
     public Cell(int xCoordinate, int yCoordinate, Grid grid){
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
