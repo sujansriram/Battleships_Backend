@@ -5,13 +5,17 @@ import com.example.Battleships_Backend.models.Game;
 import com.example.Battleships_Backend.models.Grid;
 import com.example.Battleships_Backend.models.Reply;
 import com.example.Battleships_Backend.repositories.GameRepository;
+import com.example.Battleships_Backend.repositories.GridRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GameService {
+    @Autowired
+    GridRepository gridRepository;
 
     @Autowired
     GameRepository gameRepository;
@@ -19,10 +23,11 @@ public class GameService {
     @Autowired
     GridService gridService;
 
-    Game game = gameRepository.findAll().get(0);
+    Game game;
 
     public Game resetGame() {
-        ArrayList<Grid> grids = game.getGrids();
+        game = getGame();
+        List<Grid> grids = game.getGrids();
         gridService.resetCells(grids);
         game.setGrids(grids);
         game.setStarted(false);
@@ -46,12 +51,15 @@ public class GameService {
         gridService.initialiseCells(gridPlayerTwo);
         Game newGame = new Game(gridPlayerOne, gridPlayerTwo);
         gameRepository.save(newGame);
+        gridRepository.save(gridPlayerOne);
+        gridRepository.save(gridPlayerTwo);
         return newGame;
     }
 
     public Game addSetupGrid(Grid grid) {
+       game = getGame();
         int id = grid.getId() - 1;
-        ArrayList<Grid> grids = game.getGrids();
+        List<Grid> grids = game.getGrids();
         grids.set(id, grid);
         game.setGrids(grids);
         gameRepository.save(game);
@@ -59,6 +67,7 @@ public class GameService {
     }
 
     public Game startGame() {
+        game = getGame();
         game.setStarted(true);
         gameRepository.save(game);
         return game;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "grids")
 public class Grid {
@@ -17,7 +18,7 @@ public class Grid {
 
     @OneToMany(mappedBy = "grid")
     @JsonIgnoreProperties({"grids"})
-    private ArrayList<Cell> cells;
+    private List<Cell> cells;
 
     @ManyToOne
     @JoinColumn(name = "game_id")
@@ -48,11 +49,11 @@ public class Grid {
         this.playerName = playerName;
     }
 
-    public ArrayList<Cell> getCells() {
+    public List<Cell> getCells() {
         return cells;
     }
 
-    public void setCells(ArrayList<Cell> cells) {
+    public void setCells(List<Cell> cells) {
         this.cells = cells;
     }
 
