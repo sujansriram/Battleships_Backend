@@ -20,7 +20,7 @@ public class Game {
     @Column(name = "player_one_turn")
     private boolean playerOneTurn;
 
-    @OneToMany(mappedBy = "grid")
+    @OneToMany(mappedBy = "game")
     @JsonIgnoreProperties({"games"})
     private ArrayList<Grid> grids;
 

@@ -3,6 +3,8 @@ package com.example.Battleships_Backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+
 @Entity(name = "grids")
 public class Grid {
 
@@ -13,9 +15,9 @@ public class Grid {
     @Column(name = "player_name")
     private String playerName;
 
-    @OneToMany(mappedBy = "cell")
+    @OneToMany(mappedBy = "grid")
     @JsonIgnoreProperties({"grids"})
-    private Cell[][] cells;
+    private ArrayList<Cell> cells;
 
     @ManyToOne
     @JoinColumn(name = "game_id")
@@ -25,7 +27,7 @@ public class Grid {
 //    Constructor
     public Grid(String playerName){
         this.playerName = playerName;
-        this.cells = new Cell[8][8];
+        this.cells = new ArrayList<>();
     }
 
     public Grid(){
@@ -47,11 +49,11 @@ public class Grid {
         this.playerName = playerName;
     }
 
-    public Cell[][] getCells() {
+    public ArrayList<Cell> getCells() {
         return cells;
     }
 
-    public void setCells(Cell[][] cells) {
+    public void setCells(ArrayList<Cell> cells) {
         this.cells = cells;
     }
 

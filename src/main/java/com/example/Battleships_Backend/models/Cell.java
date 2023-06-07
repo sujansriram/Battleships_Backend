@@ -3,7 +3,7 @@ package com.example.Battleships_Backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-@Entity(name = "cells")
+@Entity
 public class Cell {
 
     @Id
