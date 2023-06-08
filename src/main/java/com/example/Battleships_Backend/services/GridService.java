@@ -43,4 +43,12 @@ public class GridService {
             gridRepository.save(grid);
         }
     }
+
+    public void deleteGrid(Grid grid) {
+        List<Cell> cells = grid.getCells();
+        for(Cell cell : cells){
+            cellRepository.delete(cell);
+        }
+        gridRepository.delete(grid);
+    }
 }

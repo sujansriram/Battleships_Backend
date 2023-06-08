@@ -26,7 +26,7 @@ public class Game {
     private boolean isSinglePlayer;
 
     @OneToMany(mappedBy = "game")
-    @JsonIgnoreProperties({"games"})
+    @JsonIgnoreProperties({"game"})
     private List<Grid> grids;
 
     public Game(boolean isSinglePlayer){

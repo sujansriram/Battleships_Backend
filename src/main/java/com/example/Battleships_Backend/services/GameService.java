@@ -166,4 +166,13 @@ public class GameService {
         gameRepository.save(game);
         return game;
     }
+
+    public void deleteGame() {
+        game = getGame();
+        List<Grid> grids = game.getGrids();
+        for(Grid grid : grids){
+            gridService.deleteGrid(grid);
+        }
+        gameRepository.delete(game);
+    }
 }
