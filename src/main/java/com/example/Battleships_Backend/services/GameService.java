@@ -1,11 +1,10 @@
 package com.example.Battleships_Backend.services;
 
-import com.example.Battleships_Backend.models.Cell;
-import com.example.Battleships_Backend.models.Game;
-import com.example.Battleships_Backend.models.Grid;
-import com.example.Battleships_Backend.models.Reply;
+import com.example.Battleships_Backend.models.*;
+import com.example.Battleships_Backend.repositories.CellRepository;
 import com.example.Battleships_Backend.repositories.GameRepository;
 import com.example.Battleships_Backend.repositories.GridRepository;
+import com.example.Battleships_Backend.repositories.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,12 @@ public class GameService {
 
     @Autowired
     GameRepository gameRepository;
+
+    @Autowired
+    ShipRepository shipRepository;
+
+    @Autowired
+    CellRepository cellRepository;
 
     @Autowired
     GridService gridService;
@@ -37,8 +42,61 @@ public class GameService {
         return game;
     }
 
-//    public Reply handleTurn(Cell cell) {
-//    }
+    public void incrementTimesHit(Ship ship){
+        ship.setNumberOfTimesHit(ship.getNumberOfTimesHit() + 1);
+    }
+
+    public void toggleTurn(Game game){
+        game.setPlayerOneTurn(!game.isPlayerOneTurn());
+    }
+    public Reply handleTurn(Long cellId) {
+        game = getGame();
+        Cell cell = cellRepository.findById(cellId).get();
+        Ship ship = cell.getShip();
+        if (ship != null){
+            incrementTimesHit(ship);
+            if(ship.getNumberOfTimesHit() == ship.getSize()){
+                ship.setHasSunk(true);
+            }
+            shipRepository.save(ship);
+        }
+        cell.setHasBeenHit(true);
+        cellRepository.save(cell);
+        if(checkGameFinished(game)){
+            game.setFinished(true);
+        }
+        toggleTurn(game);
+        gameRepository.save(game);
+        return new Reply(game, cell);
+    }
+
+    public boolean checkGameFinished(Game game){
+        Grid gridPlayerOne;
+        Grid gridPlayerTwo;
+        Grid gridOne = game.getGrids().get(0);
+        Grid gridTwo = game.getGrids().get(1);
+        if(gridOne.getId() % 2 == 0){
+            gridPlayerTwo = gridOne;
+            gridPlayerOne = gridTwo;
+        } else {
+            gridPlayerTwo = gridTwo;
+            gridPlayerOne = gridOne;
+        }
+
+        if(game.isPlayerOneTurn()){
+            for (Cell cell: gridPlayerTwo.getCells()){
+                if(cell.getShip() != null && !cell.isHasBeenHit()){
+                    return false;
+                }
+            }
+        } else {
+            for (Cell cell: gridPlayerOne.getCells()){
+                if(cell.getShip() != null && !cell.isHasBeenHit()){
+                    return false;
+                }
+            }
+        } return true;
+    }
 
     public Game getGame() {
         return gameRepository.findAll().get(0);

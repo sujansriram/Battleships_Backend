@@ -22,6 +22,9 @@ public class Ship {
     @Column( name = "has_sunk")
     private boolean hasSunk;
 
+    @Column(name= "number_of_times_hit")
+    private int numberOfTimesHit;
+
     @OneToMany(mappedBy = "ship")
     @JsonIgnoreProperties({"ships"})
     private ArrayList<Cell> cells;
@@ -31,6 +34,7 @@ public class Ship {
     public Ship(String name, int size){
         this.name = name;
         this.size = size;
+        this.numberOfTimesHit = 0;
         this.hasSunk = false;
         this.cells = new ArrayList<>();
     }
@@ -77,5 +81,13 @@ public class Ship {
 
     public void setCells(ArrayList<Cell> cells) {
         this.cells = cells;
+    }
+
+    public int getNumberOfTimesHit() {
+        return numberOfTimesHit;
+    }
+
+    public void setNumberOfTimesHit(int numberOfTimesHit) {
+        this.numberOfTimesHit = numberOfTimesHit;
     }
 }
