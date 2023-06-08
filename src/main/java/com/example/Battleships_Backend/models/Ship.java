@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "ships")
 public class Ship {
@@ -22,13 +23,17 @@ public class Ship {
     @Column( name = "has_sunk")
     private boolean hasSunk;
 
+    @Column(name= "number_of_times_hit")
+    private int numberOfTimesHit;
+
     @OneToMany(mappedBy = "ship")
     @JsonIgnoreProperties({"ships"})
-    private ArrayList<Cell> cells;
+    private List<Cell> cells;
 
 
 //    Constructor
     public Ship(String name, int size){
+
         this.name = name;
         this.size = size;
         this.hasSunk = false;
@@ -71,11 +76,19 @@ public class Ship {
         this.hasSunk = hasSunk;
     }
 
-    public ArrayList<Cell> getCells() {
+    public List<Cell> getCells() {
         return cells;
     }
 
-    public void setCells(ArrayList<Cell> cells) {
+    public void setCells(List<Cell> cells) {
         this.cells = cells;
+    }
+
+    public int getNumberOfTimesHit() {
+        return numberOfTimesHit;
+    }
+
+    public void setNumberOfTimesHit(int numberOfTimesHit) {
+        this.numberOfTimesHit = numberOfTimesHit;
     }
 }
