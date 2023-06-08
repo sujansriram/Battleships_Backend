@@ -36,6 +36,7 @@ public class Ship {
 
         this.name = name;
         this.size = size;
+        this.numberOfTimesHit = 0;
         this.hasSunk = false;
         this.cells = new ArrayList<>();
     }
