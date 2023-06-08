@@ -59,7 +59,7 @@ public class GameController {
 //        Reply reply = gameService.handleTurn(cell);
 //        return new ResponseEntity<>(reply, HttpStatus.OK);
 //    }
-
+//test
     @PutMapping
     public ResponseEntity<Game> resetGame(){
         Game game = gameService.resetGame();
