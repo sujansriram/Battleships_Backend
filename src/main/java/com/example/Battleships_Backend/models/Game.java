@@ -22,21 +22,22 @@ public class Game {
     @Column(name = "player_one_turn")
     private boolean playerOneTurn;
 
+    @Column(name = "is_single_player")
+    private boolean isSinglePlayer;
+
     @OneToMany(mappedBy = "game")
     @JsonIgnoreProperties({"games"})
     private List<Grid> grids;
 
-    public Game(){
+    public Game(boolean isSinglePlayer){
         this.isStarted = false;
         this.isFinished = false;
         this.playerOneTurn = true;
+        this.isSinglePlayer = isSinglePlayer;
         this.grids = new ArrayList<>();
-//        this.grids.add(gridPlayerOne);
-//        this.grids.add(gridPlayerTwo);
     }
-
-//    public Game(){
-//    }
+    public Game(){
+    }
 
 
     public Long getId() {
@@ -77,5 +78,13 @@ public class Game {
 
     public void setGrids(List<Grid> grids) {
         this.grids = grids;
+    }
+
+    public boolean isSinglePlayer() {
+        return isSinglePlayer;
+    }
+
+    public void setSinglePlayer(boolean singlePlayer) {
+        isSinglePlayer = singlePlayer;
     }
 }

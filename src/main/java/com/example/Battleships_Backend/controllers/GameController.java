@@ -37,8 +37,8 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEntity<Game> createGame(){
-        Game game = gameService.createGame();
+    public ResponseEntity<Game> createGame(@RequestParam boolean isSinglePlayer){
+        Game game = gameService.createGame(isSinglePlayer);
         return new ResponseEntity<>(game, HttpStatus.CREATED);
     }
 

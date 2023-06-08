@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class GameService {
@@ -66,8 +67,33 @@ public class GameService {
             game.setFinished(true);
         }
         toggleTurn(game);
+        if(!game.isPlayerOneTurn()){
+            Grid grid = gridRepository.findAll().get(0);
+            handleComputerTurn(grid);
+            toggleTurn(game);
+        }
         gameRepository.save(game);
         return new Reply(game, cell);
+    }
+
+    public List<Long> availableCells(Grid grid){
+        List<Long> availableCells = new ArrayList<>();
+        List<Cell> gridCells = grid.getCells();
+        for(Cell cell : gridCells){
+            if((cell.getxCoordinate() + cell.getyCoordinate()) % 2 == 0){
+                availableCells.add(cell.getId());
+            }
+        }
+        return availableCells;
+    }
+
+    private void handleComputerTurn(Grid grid) {
+        List<Long> availableCells = availableCells(grid);
+        Random random = new Random();
+        int index = random.nextInt(availableCells.size());
+        Long randomCellId = availableCells.get(index);
+
+
     }
 
     public boolean checkGameFinished(Game game){
@@ -109,8 +135,8 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public Game createGame() {
-        Game newGame = new Game();
+    public Game createGame(boolean isSinglePlayer) {
+        Game newGame = new Game(isSinglePlayer);
         gameRepository.save(newGame);
         Grid gridPlayerOne = new Grid("Player 1", newGame);
         Grid gridPlayerTwo = new Grid("Player 2", newGame);
