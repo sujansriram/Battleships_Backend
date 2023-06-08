@@ -46,14 +46,14 @@ public class GameServiceTest {
 
     @Test
     public void canHandleHit(){
-        gameService.handleTurn(cell1);
+        gameService.handleTurn(cell1.getId());
         assertThat(cell1.isHasBeenHit()).isEqualTo(true);
     }
 
     @Test
     public void canHandleShipHit(){
-        gameService.handleTurn(cell1);
-        gameService.handleTurn(cell2);
+        gameService.handleTurn(cell1.getId());
+        gameService.handleTurn(cell2.getId());
         assertThat(ship.isHasSunk()).isEqualTo(true);
         assertThat(game.isFinished()).isEqualTo(true);
     }
