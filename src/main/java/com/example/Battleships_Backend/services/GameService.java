@@ -33,9 +33,8 @@ public class GameService {
 
     public Game resetGame() {
         game = getGame();
-        List<Grid> grids = game.getGrids();
-        gridService.resetCells(grids);
-        game.setGrids(grids);
+        gridService.resetCells(game.getGridPlayerOne());
+        gridService.resetCells(game.getGridPlayerTwo());
         game.setStarted(false);
         game.setFinished(false);
         game.setPlayerOneTurn(true);
@@ -65,12 +64,12 @@ public class GameService {
         cellRepository.save(cell);
         if(checkGameFinished(game)){
             game.setFinished(true);
-        }
-        toggleTurn(game);
-        if(!game.isPlayerOneTurn() && game.isSinglePlayer()){
-            Grid grid = gridRepository.findAll().get(0);
-            handleComputerTurn(grid);
+        }else {
             toggleTurn(game);
+            if (!game.isPlayerOneTurn() && game.isSinglePlayer()) {
+                Grid grid = gridRepository.findAll().get(0);
+                handleComputerTurn(grid);
+            }
         }
         gameRepository.save(game);
         return new Reply(game, cell);
@@ -87,6 +86,8 @@ public class GameService {
         return availableCells;
     }
 
+
+
     private void handleComputerTurn(Grid grid) {
         List<Long> availableCells = availableCells(grid);
         Random random = new Random();
@@ -98,8 +99,8 @@ public class GameService {
     public boolean checkGameFinished(Game game){
         Grid gridPlayerOne;
         Grid gridPlayerTwo;
-        Grid gridOne = game.getGrids().get(0);
-        Grid gridTwo = game.getGrids().get(1);
+        Grid gridOne = game.getGridPlayerOne();
+        Grid gridTwo = game.getGridPlayerTwo();
         if(gridOne.getId() % 2 == 0){
             gridPlayerTwo = gridOne;
             gridPlayerOne = gridTwo;
@@ -127,35 +128,33 @@ public class GameService {
         return gameRepository.findAll().get(0);
     }
 
-    public void addGridToGame(Grid grid, Game game){
-        List<Grid> grids = game.getGrids();
-        grids.add(grid);
-        game.setGrids(grids);
-        gameRepository.save(game);
-    }
-
     public Game createGame(boolean isSinglePlayer) {
         Game newGame = new Game(isSinglePlayer);
+        System.out.println(newGame);
         gameRepository.save(newGame);
-        Grid gridPlayerOne = new Grid("Player 1", newGame);
-        Grid gridPlayerTwo = new Grid("Player 2", newGame);
-        gridService.initialiseCells(gridPlayerOne);
-        gridService.initialiseCells(gridPlayerTwo);
-        addGridToGame(gridPlayerOne, newGame);
-        addGridToGame(gridPlayerTwo, newGame);
+        game.setGridPlayerOne(new Grid("Player One", newGame));
+        game.setGridPlayerTwo(new Grid("Player Two", newGame));
+        System.out.println(game.getGridPlayerOne());
+        gameRepository.save(newGame);
+        gridService.initialiseCells(newGame.getGridPlayerOne());
+        gridService.initialiseCells(newGame.getGridPlayerTwo());
 //        Game newGame = new Game(gridPlayerOne, gridPlayerTwo);
         gameRepository.save(newGame);
-        gridRepository.save(gridPlayerOne);
-        gridRepository.save(gridPlayerTwo);
+        gridRepository.save(newGame.getGridPlayerOne());
+        gridRepository.save(newGame.getGridPlayerTwo());
         return newGame;
     }
 
-    public Game addSetupGrid(Grid grid) {
+    public Game addSetupGridPlayerOne(Grid grid) {
         game = getGame();
-        int id = grid.getId() - 1;
-        List<Grid> grids = game.getGrids();
-        grids.set(id, grid);
-        game.setGrids(grids);
+        game.setGridPlayerOne(grid);
+        gameRepository.save(game);
+        return game;
+    }
+
+    public Game addSetupGridPlayerTwo(Grid grid) {
+        game = getGame();
+        game.setGridPlayerTwo(grid);
         gameRepository.save(game);
         return game;
     }
@@ -169,10 +168,10 @@ public class GameService {
 
     public void deleteGame() {
         game = getGame();
-        List<Grid> grids = game.getGrids();
-        for(Grid grid : grids){
-            gridService.deleteGrid(grid);
-        }
+        Grid gridPlayerOne = game.getGridPlayerOne();
+        Grid gridPlayerTwo = game.getGridPlayerTwo();
+        gridService.deleteGrid(gridPlayerOne);
+        gridService.deleteGrid(gridPlayerTwo);
         gameRepository.delete(game);
     }
 }

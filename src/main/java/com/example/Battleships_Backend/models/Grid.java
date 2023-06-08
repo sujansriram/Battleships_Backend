@@ -20,16 +20,16 @@ public class Grid {
     @JsonIgnoreProperties({"grid"})
     private List<Cell> cells;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "game_id")
-    @JsonIgnoreProperties({"grids"})
+    @JsonIgnoreProperties({"grid_player_one"})
     private Game game;
 
 //    Constructor
     public Grid(String playerName, Game game){
+        this.game = game;
         this.playerName = playerName;
         this.cells = new ArrayList<>();
-        this.game = game;
     }
 
     public Grid(){
@@ -58,11 +58,11 @@ public class Grid {
         this.cells = cells;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
+//    public Game getGame() {
+//        return game;
+//    }
+//
+//    public void setGame(Game game) {
+//        this.game = game;
+//    }
 }

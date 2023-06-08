@@ -25,20 +25,45 @@ public class Game {
     @Column(name = "is_single_player")
     private boolean isSinglePlayer;
 
-    @OneToMany(mappedBy = "game")
+//    @OneToMany(mappedBy = "game")
+//    @JsonIgnoreProperties({"game"})
+//    private List<Grid> grids;
+
+    @OneToOne(mappedBy = "game")
     @JsonIgnoreProperties({"game"})
-    private List<Grid> grids;
+    private Grid gridPlayerOne;
+
+    @OneToOne(mappedBy = "game")
+    @JsonIgnoreProperties({"game"})
+    private Grid gridPlayerTwo;
 
     public Game(boolean isSinglePlayer){
         this.isStarted = false;
         this.isFinished = false;
         this.playerOneTurn = true;
         this.isSinglePlayer = isSinglePlayer;
-        this.grids = new ArrayList<>();
+        this.gridPlayerOne = null;
+        this.gridPlayerTwo = null;
+//        this.grids = new ArrayList<>();
     }
     public Game(){
     }
 
+    public Grid getGridPlayerOne() {
+        return gridPlayerOne;
+    }
+
+    public void setGridPlayerOne(Grid gridPlayerOne) {
+        this.gridPlayerOne = gridPlayerOne;
+    }
+
+    public Grid getGridPlayerTwo() {
+        return gridPlayerTwo;
+    }
+
+    public void setGridPlayerTwo(Grid gridPlayerTwo) {
+        this.gridPlayerTwo = gridPlayerTwo;
+    }
 
     public Long getId() {
         return id;
@@ -72,13 +97,13 @@ public class Game {
         this.playerOneTurn = playerOneTurn;
     }
 
-    public List<Grid> getGrids() {
-        return grids;
-    }
-
-    public void setGrids(List<Grid> grids) {
-        this.grids = grids;
-    }
+//    public List<Grid> getGrids() {
+//        return grids;
+//    }
+//
+//    public void setGrids(List<Grid> grids) {
+//        this.grids = grids;
+//    }
 
     public boolean isSinglePlayer() {
         return isSinglePlayer;

@@ -36,12 +36,10 @@ public class GridService {
         }
     }
 
-    public void resetCells(List<Grid> grids) {
-        for (Grid grid : grids){
-            grid.setCells(new ArrayList<>());
-            initialiseCells(grid);
-            gridRepository.save(grid);
-        }
+    public void resetCells(Grid grid) {
+        grid.setCells(new ArrayList<>());
+        initialiseCells(grid);
+        gridRepository.save(grid);
     }
 
     public void deleteGrid(Grid grid) {

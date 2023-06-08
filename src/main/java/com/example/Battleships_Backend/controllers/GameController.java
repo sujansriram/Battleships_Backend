@@ -43,10 +43,14 @@ public class GameController {
     }
 
     @PatchMapping
-    public ResponseEntity<Game> updateGridSetup(@RequestBody(required = false) Grid grid){
+    public ResponseEntity<Game> updateGridSetup(@RequestBody(required = false) Grid grid, @RequestParam(required = false) int gridNumber){
         Game game;
         if (grid != null){
-           game = gameService.addSetupGrid(grid);
+            if(gridNumber == 1) {
+                game = gameService.addSetupGridPlayerOne(grid);
+            }else{
+                game = gameService.addSetupGridPlayerTwo(grid);
+            }
         } else {
             game = gameService.startGame();
         }
