@@ -160,6 +160,7 @@ public class GameService {
             gridRepository.save(gridPlayerTwo);
             game = newGame;
         } else{
+            game = games.get(0);
             List<Grid> grids = game.getGrids();
             gridService.initialiseCells(grids.get(0));
             gridService.initialiseCells(grids.get(1));

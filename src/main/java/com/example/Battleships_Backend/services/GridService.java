@@ -51,6 +51,5 @@ public class GridService {
         for(Cell cell : cells){
             cellRepository.delete(cell);
         }
-        gridRepository.save(grid);
     }
 }
