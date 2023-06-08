@@ -17,7 +17,7 @@ public class Grid {
     private String playerName;
 
     @OneToMany(mappedBy = "grid")
-    @JsonIgnoreProperties({"grids"})
+    @JsonIgnoreProperties({"grid"})
     private List<Cell> cells;
 
     @ManyToOne

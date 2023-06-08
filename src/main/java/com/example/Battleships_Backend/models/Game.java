@@ -23,7 +23,7 @@ public class Game {
     private boolean playerOneTurn;
 
     @OneToMany(mappedBy = "game")
-    @JsonIgnoreProperties({"games"})
+    @JsonIgnoreProperties({"game"})
     private List<Grid> grids;
 
     public Game(){
