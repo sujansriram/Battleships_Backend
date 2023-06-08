@@ -67,7 +67,7 @@ public class GameService {
             game.setFinished(true);
         }
         toggleTurn(game);
-        if(!game.isPlayerOneTurn()){
+        if(!game.isPlayerOneTurn() && game.isSinglePlayer()){
             Grid grid = gridRepository.findAll().get(0);
             handleComputerTurn(grid);
             toggleTurn(game);
@@ -92,8 +92,7 @@ public class GameService {
         Random random = new Random();
         int index = random.nextInt(availableCells.size());
         Long randomCellId = availableCells.get(index);
-
-
+        handleTurn(randomCellId);
     }
 
     public boolean checkGameFinished(Game game){
