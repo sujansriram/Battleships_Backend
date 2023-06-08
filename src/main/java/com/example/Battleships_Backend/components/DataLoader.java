@@ -40,43 +40,43 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception{
-        Game game = new Game(true);
-        gameRepository.save(game);
-        Grid grid1 = new Grid("PlayerOne", game);
-        Grid grid2 = new Grid("PlayerTwo", game);
-        gridRepository.save(grid1);
-        gridRepository.save(grid2);
-        Cell cell1 = new Cell(0,0, grid1);
-        Cell cell2 = new Cell(0, 1, grid1);
-        Cell cell3 = new Cell(0, 0, grid2);
-        Cell cell4 = new Cell(0, 1, grid2);
-        gameService.addGridToGame(grid1, game);
-        gameService.addGridToGame(grid2, game);
-        game.setStarted(true);
-        Ship ship1 = new Ship("Cruiser" , 2);
-        Ship ship2 = new Ship("Cruiser" , 2);
-
-        List<Cell> cells1 = new ArrayList<>();
-        cells1.add(cell1);
-        cells1.add(cell2);
-        ship1.setCells(cells1);
-
-        List<Cell> cells2 = new ArrayList<>();
-        cells2.add(cell3);
-        cells2.add(cell4);
-        ship2.setCells(cells2);
-
-        cell1.setShip(ship1);
-        cell2.setShip(ship1);
-        cell3.setShip(ship2);
-        cell4.setShip(ship2);
-
-        gameRepository.save(game);
-        shipRepository.save(ship1);
-        shipRepository.save(ship2);
-        cellRepository.save(cell1);
-        cellRepository.save(cell2);
-        cellRepository.save(cell3);
-        cellRepository.save(cell4);
+//        Game game = new Game(true);
+//        gameRepository.save(game);
+//        Grid grid1 = new Grid("PlayerOne", game);
+//        Grid grid2 = new Grid("PlayerTwo", game);
+//        gridRepository.save(grid1);
+//        gridRepository.save(grid2);
+//        Cell cell1 = new Cell(0,0, grid1);
+//        Cell cell2 = new Cell(0, 1, grid1);
+//        Cell cell3 = new Cell(0, 0, grid2);
+//        Cell cell4 = new Cell(0, 1, grid2);
+//        gameService.addGridToGame(grid1, game);
+//        gameService.addGridToGame(grid2, game);
+//        game.setStarted(true);
+//        Ship ship1 = new Ship("Cruiser" , 2);
+//        Ship ship2 = new Ship("Cruiser" , 2);
+//
+//        List<Cell> cells1 = new ArrayList<>();
+//        cells1.add(cell1);
+//        cells1.add(cell2);
+//        ship1.setCells(cells1);
+//
+//        List<Cell> cells2 = new ArrayList<>();
+//        cells2.add(cell3);
+//        cells2.add(cell4);
+//        ship2.setCells(cells2);
+//
+//        cell1.setShip(ship1);
+//        cell2.setShip(ship1);
+//        cell3.setShip(ship2);
+//        cell4.setShip(ship2);
+//
+//        gameRepository.save(game);
+//        shipRepository.save(ship1);
+//        shipRepository.save(ship2);
+//        cellRepository.save(cell1);
+//        cellRepository.save(cell2);
+//        cellRepository.save(cell3);
+//        cellRepository.save(cell4);
     }
 }

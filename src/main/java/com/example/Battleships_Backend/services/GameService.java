@@ -6,10 +6,12 @@ import com.example.Battleships_Backend.repositories.GameRepository;
 import com.example.Battleships_Backend.repositories.GridRepository;
 import com.example.Battleships_Backend.repositories.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -34,7 +36,8 @@ public class GameService {
     public Game resetGame() {
         game = getGame();
         List<Grid> grids = game.getGrids();
-        gridService.resetCells(grids);
+        gridService.resetGrid(grids.get(0));
+        gridService.resetGrid(grids.get(1));
         game.setGrids(grids);
         game.setStarted(false);
         game.setFinished(false);
@@ -128,6 +131,11 @@ public class GameService {
         return gameRepository.findAll().get(0);
     }
 
+    public List<Game> getGames(){
+        return gameRepository.findAll();
+    }
+
+
     public void addGridToGame(Grid grid, Game game){
         List<Grid> grids = game.getGrids();
         grids.add(grid);
@@ -136,19 +144,29 @@ public class GameService {
     }
 
     public Game createGame(boolean isSinglePlayer) {
-        Game newGame = new Game(isSinglePlayer);
-        gameRepository.save(newGame);
-        Grid gridPlayerOne = new Grid("Player 1", newGame);
-        Grid gridPlayerTwo = new Grid("Player 2", newGame);
-        gridService.initialiseCells(gridPlayerOne);
-        gridService.initialiseCells(gridPlayerTwo);
-        addGridToGame(gridPlayerOne, newGame);
-        addGridToGame(gridPlayerTwo, newGame);
+        List<Game> games = getGames();
+        if (games.size() == 0){
+            Game newGame = new Game(isSinglePlayer);
+            gameRepository.save(newGame);
+            Grid gridPlayerOne = new Grid("Player 1", newGame);
+            Grid gridPlayerTwo = new Grid("Player 2", newGame);
+            gridService.initialiseCells(gridPlayerOne);
+            gridService.initialiseCells(gridPlayerTwo);
+            addGridToGame(gridPlayerOne, newGame);
+            addGridToGame(gridPlayerTwo, newGame);
 //        Game newGame = new Game(gridPlayerOne, gridPlayerTwo);
-        gameRepository.save(newGame);
-        gridRepository.save(gridPlayerOne);
-        gridRepository.save(gridPlayerTwo);
-        return newGame;
+            gameRepository.save(newGame);
+            gridRepository.save(gridPlayerOne);
+            gridRepository.save(gridPlayerTwo);
+            game = newGame;
+        } else{
+            List<Grid> grids = game.getGrids();
+            gridService.initialiseCells(grids.get(0));
+            gridService.initialiseCells(grids.get(1));
+            game.setSinglePlayer(isSinglePlayer);
+            gameRepository.save(game);
+        }
+        return game;
     }
 
     public Game addSetupGrid(Grid grid) {
@@ -172,8 +190,7 @@ public class GameService {
         game = getGame();
         List<Grid> grids = game.getGrids();
         for(Grid grid : grids){
-            gridService.deleteGrid(grid);
+            gridService.resetGrid(grid);
         }
-        gameRepository.delete(game);
     }
 }
