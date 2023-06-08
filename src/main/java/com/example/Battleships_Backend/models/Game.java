@@ -26,17 +26,17 @@ public class Game {
     @JsonIgnoreProperties({"games"})
     private List<Grid> grids;
 
-    public Game(Grid gridPlayerOne, Grid gridPlayerTwo){
+    public Game(){
         this.isStarted = false;
         this.isFinished = false;
         this.playerOneTurn = true;
         this.grids = new ArrayList<>();
-        this.grids.add(gridPlayerOne);
-        this.grids.add(gridPlayerTwo);
+//        this.grids.add(gridPlayerOne);
+//        this.grids.add(gridPlayerTwo);
     }
 
-    public Game(){
-    }
+//    public Game(){
+//    }
 
 
     public Long getId() {

@@ -44,12 +44,23 @@ public class GameService {
         return gameRepository.findAll().get(0);
     }
 
+    public void addGridToGame(Grid grid, Game game){
+        List<Grid> grids = game.getGrids();
+        grids.add(grid);
+        game.setGrids(grids);
+        gameRepository.save(game);
+    }
+
     public Game createGame() {
-        Grid gridPlayerOne = new Grid("Player 1");
-        Grid gridPlayerTwo = new Grid("Player 2");
+        Game newGame = new Game();
+        gameRepository.save(newGame);
+        Grid gridPlayerOne = new Grid("Player 1", newGame);
+        Grid gridPlayerTwo = new Grid("Player 2", newGame);
         gridService.initialiseCells(gridPlayerOne);
         gridService.initialiseCells(gridPlayerTwo);
-        Game newGame = new Game(gridPlayerOne, gridPlayerTwo);
+        addGridToGame(gridPlayerOne, newGame);
+        addGridToGame(gridPlayerTwo, newGame);
+//        Game newGame = new Game(gridPlayerOne, gridPlayerTwo);
         gameRepository.save(newGame);
         gridRepository.save(gridPlayerOne);
         gridRepository.save(gridPlayerTwo);
@@ -57,7 +68,7 @@ public class GameService {
     }
 
     public Game addSetupGrid(Grid grid) {
-       game = getGame();
+        game = getGame();
         int id = grid.getId() - 1;
         List<Grid> grids = game.getGrids();
         grids.set(id, grid);

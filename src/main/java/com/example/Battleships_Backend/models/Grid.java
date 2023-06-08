@@ -26,9 +26,10 @@ public class Grid {
     private Game game;
 
 //    Constructor
-    public Grid(String playerName){
+    public Grid(String playerName, Game game){
         this.playerName = playerName;
         this.cells = new ArrayList<>();
+        this.game = game;
     }
 
     public Grid(){
