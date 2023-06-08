@@ -66,11 +66,12 @@ public class GameService {
         if(checkGameFinished(game)){
             game.setFinished(true);
         }
-        toggleTurn(game);
-        if(!game.isPlayerOneTurn() && game.isSinglePlayer()){
-            Grid grid = gridRepository.findAll().get(0);
-            handleComputerTurn(grid);
+        else {
             toggleTurn(game);
+            if (!game.isPlayerOneTurn() && game.isSinglePlayer()) {
+                Grid grid = gridRepository.findAll().get(0);
+                handleComputerTurn(grid);
+            }
         }
         gameRepository.save(game);
         return new Reply(game, cell);

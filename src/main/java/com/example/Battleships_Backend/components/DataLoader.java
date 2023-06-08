@@ -40,7 +40,7 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception{
-        Game game = new Game();
+        Game game = new Game(true);
         gameRepository.save(game);
         Grid grid1 = new Grid("PlayerOne", game);
         Grid grid2 = new Grid("PlayerTwo", game);
