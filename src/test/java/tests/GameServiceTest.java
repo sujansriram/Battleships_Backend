@@ -59,7 +59,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void canHandleShipHit(){
+    public void canHandleShipHits(){
         gameService.handleTurn(cell1.getId());
         assertThat(ship.getNumberOfTimesHit()).isEqualTo(1);
     }
