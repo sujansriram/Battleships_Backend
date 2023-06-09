@@ -11,6 +11,7 @@ import com.example.Battleships_Backend.services.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,6 +29,9 @@ public class GameController {
 
     @Autowired
     CellService cellService;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
 
     @GetMapping
@@ -57,6 +61,10 @@ public class GameController {
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Reply> handleTurn(@PathVariable("id") Long id, @RequestParam Long cellId){
         Reply reply = gameService.handleTurn(cellId);
+        Game game = reply.getGame();
+        if(!game.isSinglePlayer()){
+            simpMessagingTemplate.convertAndSend("/games", reply); // to send a reply to the other person
+        }
         return new ResponseEntity<>(reply, HttpStatus.OK);
     }
 
