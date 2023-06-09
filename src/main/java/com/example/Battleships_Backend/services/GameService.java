@@ -176,4 +176,9 @@ public class GameService {
         }
         gameRepository.delete(game);
     }
+
+    public void connect(Game game) {
+        game.setSinglePlayer(false);
+        gameRepository.save(game);
+    }
 }

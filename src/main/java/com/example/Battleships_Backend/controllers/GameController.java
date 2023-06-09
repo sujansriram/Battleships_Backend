@@ -4,6 +4,7 @@ import com.example.Battleships_Backend.models.Cell;
 import com.example.Battleships_Backend.models.Game;
 import com.example.Battleships_Backend.models.Grid;
 import com.example.Battleships_Backend.models.Reply;
+import com.example.Battleships_Backend.repositories.GameRepository;
 import com.example.Battleships_Backend.services.CellService;
 import com.example.Battleships_Backend.services.GameService;
 import com.example.Battleships_Backend.services.GridService;
@@ -11,6 +12,8 @@ import com.example.Battleships_Backend.services.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,8 @@ public class GameController {
 
     @Autowired
     CellService cellService;
+    @Autowired
+    GameRepository gameRepository;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -78,6 +83,16 @@ public class GameController {
     public ResponseEntity<Long> deleteGame(){
         gameService.deleteGame();
         return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @MessageMapping("/connect")
+    @SendTo("/topic/game")
+    public ResponseEntity<Game> connectToGame(@RequestParam Long id){
+        Game game = gameRepository.findById(id).get();
+        gameService.connect(game);
+        System.out.println("Yay game is connected!");
+        simpMessagingTemplate.convertAndSend("/topic/game", game);
+        return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
 }
