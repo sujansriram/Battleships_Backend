@@ -1,6 +1,5 @@
 package com.example.Battleships_Backend.controllers;
 
-import com.example.Battleships_Backend.models.Cell;
 import com.example.Battleships_Backend.models.Game;
 import com.example.Battleships_Backend.models.Grid;
 import com.example.Battleships_Backend.models.Reply;
@@ -10,12 +9,15 @@ import com.example.Battleships_Backend.services.GameService;
 import com.example.Battleships_Backend.services.GridService;
 import com.example.Battleships_Backend.services.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 @RestController
 @RequestMapping(value ="/games")
@@ -85,14 +87,27 @@ public class GameController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @MessageMapping("/connect")
-    @SendTo("/topic/game")
-    public ResponseEntity<Game> connectToGame(@RequestParam Long id){
-        Game game = gameRepository.findById(id).get();
-        gameService.connect(game);
-        System.out.println("Yay game is connected!");
-        simpMessagingTemplate.convertAndSend("/topic/game", game);
+//    @MessageMapping("/connect")
+//    @SendTo("/topic/game")
+//    public ResponseEntity<Game> connectToGame(@RequestParam Long id){
+//        Game game = gameRepository.findById(id).get();
+//        gameService.connect(game);
+//        System.out.println("Yay game is connected!");
+//        simpMessagingTemplate.convertAndSend("/topic/game", game);
+//        return new ResponseEntity<>(game, HttpStatus.OK);
+//    }
+
+    @MessageMapping("/connect") // to connect send to '/app/connect'
+    @SendTo("/topic/game") // where the client will send their request
+    public ResponseEntity<Game> connectToGame(@Payload Long gameId){
+        Game game = gameRepository.findById(gameId).get();
         return new ResponseEntity<>(game, HttpStatus.OK);
+    }
+
+    @EventListener(SessionConnectedEvent.class)
+    public void checkConnection(SessionConnectedEvent event){
+//        event listener will currently do nothing but tell me if a connection is made
+        System.out.println("Connection received:" + event.getSource());
     }
 
 }
