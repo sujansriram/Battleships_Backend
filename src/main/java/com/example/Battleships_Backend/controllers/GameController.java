@@ -70,11 +70,7 @@ public class GameController {
         return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Long> deleteGame(){
-        gameService.deleteGame();
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
+
 
 }
 

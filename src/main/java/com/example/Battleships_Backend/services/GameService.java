@@ -166,12 +166,4 @@ public class GameService {
         return game;
     }
 
-    public void deleteGame() {
-        game = getGame();
-        Grid gridPlayerOne = game.getGridPlayerOne();
-        Grid gridPlayerTwo = game.getGridPlayerTwo();
-        gridService.deleteGrid(gridPlayerOne);
-        gridService.deleteGrid(gridPlayerTwo);
-        gameRepository.delete(game);
-    }
 }
