@@ -34,6 +34,8 @@ public class Ship {
     private List<Cell> cells;
 
 
+
+
 //    Constructor
     public Ship(String name, int size, boolean playerOne){
 
@@ -95,5 +97,13 @@ public class Ship {
 
     public void setNumberOfTimesHit(int numberOfTimesHit) {
         this.numberOfTimesHit = numberOfTimesHit;
+    }
+
+    public boolean isPlayerOne() {
+        return playerOne;
+    }
+
+    public void setPlayerOne(boolean playerOne) {
+        this.playerOne = playerOne;
     }
 }
