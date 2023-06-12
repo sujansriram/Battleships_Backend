@@ -32,8 +32,10 @@ public class GridService {
             for (int j=0; j<8; j++){
                 Cell cell = new Cell(i, j, grid);
                 addCellToGrid(cell, grid);
+                cellRepository.save(cell);
             }
         }
+        gridRepository.save(grid);
     }
 
     public void resetCells(List<Grid> grids) {
@@ -44,11 +46,10 @@ public class GridService {
         }
     }
 
-    public void deleteGrid(Grid grid) {
+    public void resetGrid(Grid grid) {
         List<Cell> cells = grid.getCells();
         for(Cell cell : cells){
             cellRepository.delete(cell);
         }
-        gridRepository.delete(grid);
     }
 }
