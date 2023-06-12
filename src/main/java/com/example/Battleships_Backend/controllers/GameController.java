@@ -78,12 +78,6 @@ public class GameController {
         return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Long> deleteGame(){
-        gameService.deleteGame();
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
-
     @MessageMapping("/handleTurn")
     @SendTo("/topic/game")
     public ResponseEntity<Reply> handleMultiplayerTurn(@Payload Long cellId){

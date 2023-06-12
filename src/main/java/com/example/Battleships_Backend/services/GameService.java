@@ -165,16 +165,4 @@ public class GameService {
         return game;
     }
 
-    public void deleteGame() {
-        game = getGame();
-        List<Grid> grids = game.getGrids();
-        for(Grid grid : grids){
-            gridService.resetGrid(grid);
-        }
-    }
-
-    public void connect(Game game) {
-        game.setSinglePlayer(false);
-        gameRepository.save(game);
-    }
 }
