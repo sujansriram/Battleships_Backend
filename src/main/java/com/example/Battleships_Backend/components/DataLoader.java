@@ -78,11 +78,36 @@ public class DataLoader implements ApplicationRunner {
 //        cellRepository.save(cell2);
 //        cellRepository.save(cell3);
 //        cellRepository.save(cell4);
-    }
 
-    Ship carrier = new Ship("Carrier", 5);
-    Ship battleship = new Ship("Battleship", 4);
-    Ship cruiser = new Ship("Cruiser", 3);
-    Ship submarine = new Ship("Submarine", 3);
-    Ship destroyer = new Ship("Destroyer", 2);
+        Ship carrierPlayerOne = new Ship("Carrier", 5);
+        shipRepository.save(carrierPlayerOne);
+
+        Ship battleshipPlayerOne = new Ship("Battleship", 4);
+        shipRepository.save(battleshipPlayerOne);
+
+        Ship cruiserPlayerOne = new Ship("Cruiser", 3);
+        shipRepository.save(cruiserPlayerOne);
+
+        Ship submarinePlayerOne = new Ship("Submarine", 3);
+        shipRepository.save(submarinePlayerOne);
+
+        Ship destroyerPlayerOne = new Ship("Destroyer", 2);
+        shipRepository.save(destroyerPlayerOne);
+
+
+        Ship carrierPlayerTwo = new Ship("Carrier", 5);
+        shipRepository.save(carrierPlayerTwo);
+
+        Ship battleshipPlayerTwo = new Ship("Battleship", 4);
+        shipRepository.save(battleshipPlayerTwo);
+
+        Ship cruiserPlayerTwo = new Ship("Cruiser", 3);
+        shipRepository.save(cruiserPlayerTwo);
+
+        Ship submarinePlayerTwo = new Ship("Submarine", 3);
+        shipRepository.save(submarinePlayerTwo);
+
+        Ship destroyerPlayerTwo = new Ship("Destroyer", 2);
+        shipRepository.save(destroyerPlayerTwo);
+    }
 }
