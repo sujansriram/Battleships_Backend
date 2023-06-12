@@ -65,13 +65,10 @@ public class GameController {
 
     }
 
+//    double check patch mapping on main branch
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Reply> handleTurn(@PathVariable("id") Long id, @RequestParam Long cellId){
         Reply reply = gameService.handleTurn(cellId);
-        Game game = reply.getGame();
-        if(!game.isSinglePlayer()){
-            simpMessagingTemplate.convertAndSend("/games", reply); // to send a reply to the other person
-        }
         return new ResponseEntity<>(reply, HttpStatus.OK);
     }
 
@@ -87,21 +84,11 @@ public class GameController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-//    @MessageMapping("/connect")
-//    @SendTo("/topic/game")
-//    public ResponseEntity<Game> connectToGame(@RequestParam Long id){
-//        Game game = gameRepository.findById(id).get();
-//        gameService.connect(game);
-//        System.out.println("Yay game is connected!");
-//        simpMessagingTemplate.convertAndSend("/topic/game", game);
-//        return new ResponseEntity<>(game, HttpStatus.OK);
-//    }
-
-    @MessageMapping("/connect") // to connect send to '/app/connect'
-    @SendTo("/topic/game") // where the client will send their request
-    public ResponseEntity<Game> connectToGame(@Payload Long gameId){
-        Game game = gameRepository.findById(gameId).get();
-        return new ResponseEntity<>(game, HttpStatus.OK);
+    @MessageMapping("/handleTurn")
+    @SendTo("/topic/game")
+    public ResponseEntity<Reply> handleMultiplayerTurn(@Payload Long cellId){
+        Reply reply = gameService.handleTurn(cellId);
+        return new ResponseEntity<>(reply, HttpStatus.OK);
     }
 
     @EventListener(SessionConnectedEvent.class)
