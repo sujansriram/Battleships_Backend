@@ -26,19 +26,23 @@ public class Ship {
     @Column(name= "number_of_times_hit")
     private int numberOfTimesHit;
 
+    @Column(name="player_one")
+    private boolean playerOne;
+
     @OneToMany(mappedBy = "ship")
     @JsonIgnoreProperties({"ships"})
     private List<Cell> cells;
 
 
 //    Constructor
-    public Ship(String name, int size){
+    public Ship(String name, int size, boolean playerOne){
 
         this.name = name;
         this.size = size;
         this.numberOfTimesHit = 0;
         this.hasSunk = false;
         this.cells = new ArrayList<>();
+        this.playerOne = playerOne;
     }
 
     public Ship(){
