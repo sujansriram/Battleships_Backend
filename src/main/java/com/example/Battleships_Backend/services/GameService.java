@@ -71,74 +71,11 @@ public class GameService {
         }
         else {
             toggleTurn(game);
-            if (!game.isPlayerOneTurn() && game.isSinglePlayer()) {
-                Grid grid = gridRepository.findAll().get(0);
-                handleComputerTurn(grid);
-            }
         }
         gameRepository.save(game);
         return new Reply(game, cell);
     }
 
-    public List<Long> availableCells(Grid grid){
-        List<Long> availableCells = new ArrayList<>();
-        List<Cell> gridCells = grid.getCells();
-        for(Cell cell : gridCells){
-            if((cell.getxCoordinate() + cell.getyCoordinate()) % 2 == 0){
-                availableCells.add(cell.getId());
-            }
-        }
-        return availableCells;
-    }
-
-    public List<Long> allCells(Grid grid){
-        List<Long> allCells = new ArrayList<>();
-        List<Cell> gridCells = grid.getCells();
-        for(Cell cell : gridCells){
-            allCells.add(cell.getId());
-        }
-        return allCells;
-    }
-
-    private void handleComputerTurn(Grid grid) {
-        List<Long> nearbyCells = new ArrayList<>();
-        List<Long> availableCells = availableCells(grid);
-        List<Long> allCells = allCells(grid);
-        Cell cell = null;
-        Boolean hitOnLastTurn = false;
-        Random random = new Random();
-        if(!hitOnLastTurn){
-            int index = random.nextInt(availableCells.size());
-            Long randomCellId = availableCells.get(index);
-            handleTurn(randomCellId);
-            availableCells.remove(randomCellId);
-            allCells.remove(randomCellId);
-            cell = cellRepository.findById(randomCellId).get();
-            if(cell.getShip() != null){
-                if(cell.getxCoordinate() < 7 && allCells.contains(randomCellId + 1)){
-                    nearbyCells.add(randomCellId + 1);
-                }
-                if(cell.getxCoordinate() > 1 && allCells.contains(randomCellId - 1)){
-                    nearbyCells.add(randomCellId - 1);
-                }
-                if(cell.getyCoordinate() < 7 && allCells.contains(randomCellId + 8)){
-                    nearbyCells.add(randomCellId + 8);
-                }
-                if(cell.getyCoordinate() > 1 && allCells.contains(randomCellId - 8)){
-                    nearbyCells.add(randomCellId - 8);
-                }
-            }
-        } else {
-            int index = random.nextInt(nearbyCells.size());
-            Long randomCellId = nearbyCells.get(index);
-            handleTurn(randomCellId);
-            nearbyCells.remove(randomCellId);
-            allCells.remove(randomCellId);
-        }
-
-
-
-    }
 
     public boolean checkGameFinished(Game game){
         Grid gridPlayerOne;
