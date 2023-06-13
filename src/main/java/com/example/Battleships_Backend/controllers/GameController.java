@@ -1,5 +1,6 @@
 package com.example.Battleships_Backend.controllers;
 
+import com.example.Battleships_Backend.components.UserCounter;
 import com.example.Battleships_Backend.models.Game;
 import com.example.Battleships_Backend.models.Grid;
 import com.example.Battleships_Backend.models.Reply;
@@ -37,10 +38,6 @@ public class GameController {
     @Autowired
     GameRepository gameRepository;
 
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-
-
     @GetMapping
     public ResponseEntity<Game> getGame(){
         Game game = gameService.getGame();
@@ -76,19 +73,6 @@ public class GameController {
     public ResponseEntity<Game> resetGame(){
         Game game = gameService.resetGame();
         return new ResponseEntity<>(game, HttpStatus.OK);
-    }
-
-    @MessageMapping("/handleTurn")
-    @SendTo("/topic/game")
-    public ResponseEntity<Reply> handleMultiplayerTurn(@Payload Long cellId){
-        Reply reply = gameService.handleTurn(cellId);
-        return new ResponseEntity<>(reply, HttpStatus.OK);
-    }
-
-    @EventListener(SessionConnectedEvent.class)
-    public void checkConnection(SessionConnectedEvent event){
-//        event listener will currently do nothing but tell me if a connection is made
-        System.out.println("Connection received:" + event.getSource());
     }
 
 }
