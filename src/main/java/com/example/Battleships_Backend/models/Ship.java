@@ -29,6 +29,9 @@ public class Ship {
     @Column(name="player_one")
     private boolean playerOne;
 
+    @Column(name="is_horizontal")
+    private boolean horizontal;
+
     @OneToMany(mappedBy = "ship")
     @JsonIgnoreProperties({"ships"})
     private List<Cell> cells;
@@ -45,6 +48,7 @@ public class Ship {
         this.hasSunk = false;
         this.cells = new ArrayList<>();
         this.playerOne = playerOne;
+        this.horizontal = true;
     }
 
     public Ship(){
@@ -105,5 +109,13 @@ public class Ship {
 
     public void setPlayerOne(boolean playerOne) {
         this.playerOne = playerOne;
+    }
+
+    public boolean isHorizontal() {
+        return horizontal;
+    }
+
+    public void setHorizontal(boolean horizontal) {
+        this.horizontal = horizontal;
     }
 }
