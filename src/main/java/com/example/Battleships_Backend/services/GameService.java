@@ -149,6 +149,14 @@ public class GameService {
     }
 
     public Game addSetupGrid(Grid grid) {
+
+//        need to go through grid, get each cell, find cells with
+        List<Cell> cells = grid.getCells();
+        for(Cell cell : cells){
+            cell.setGrid(grid);
+            cellRepository.save(cell);
+        }
+
         game = getGame();
 //        int id = grid.getId() - 1;
 //        List<Grid> grids = game.getGrids();
