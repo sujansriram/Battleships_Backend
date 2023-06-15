@@ -30,7 +30,7 @@ public class GridService {
     public void initialiseCells(Grid grid) {
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){
-                Cell cell = new Cell(i, j, grid);
+                Cell cell = new Cell(j, i, grid);
                 addCellToGrid(cell, grid);
                 cellRepository.save(cell);
             }
