@@ -55,6 +55,7 @@ public class GameController {
         Game game;
         if (grid != null){
            game = gameService.addSetupGrid(grid);
+            System.out.println(grid);
         } else {
             game = gameService.startGame();
         }

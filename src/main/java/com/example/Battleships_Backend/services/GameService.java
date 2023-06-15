@@ -150,11 +150,14 @@ public class GameService {
 
     public Game addSetupGrid(Grid grid) {
         game = getGame();
-        int id = grid.getId() - 1;
-        List<Grid> grids = game.getGrids();
-        grids.set(id, grid);
-        game.setGrids(grids);
-        gameRepository.save(game);
+//        int id = grid.getId() - 1;
+//        List<Grid> grids = game.getGrids();
+//        grids.set(id, grid);
+        grid.setGame(game);
+//        game.setGrids(grids);
+        gridRepository.save(grid);
+//        gameRepository.save(game);
+        System.out.println(game);
         return game;
     }
 
