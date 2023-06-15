@@ -55,7 +55,6 @@ public class GameController {
         Game game;
         if (grid != null){
            game = gameService.addSetupGrid(grid);
-            System.out.println(grid);
         } else {
             game = gameService.startGame();
         }
@@ -63,7 +62,6 @@ public class GameController {
 
     }
 
-//    double check patch mapping on main branch
     @PatchMapping(value = "/{id}")
     public ResponseEntity<Reply> handleTurn(@PathVariable("id") Long id, @RequestParam Long cellId){
         Reply reply = gameService.handleTurn(cellId);
